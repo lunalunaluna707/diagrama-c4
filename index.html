@@ -4,46 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diagrama C4 UML</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.4/pako.min.js"></script>
     <script>
-        // Cargar el archivo c4.puml desde el repositorio
-        async function fetchPumlFile() {
-            const url = 'https://raw.githubusercontent.com/lunalunaluna707/diagrama-c4/main/c4.puml';
+        // URL del archivo .puml en tu repositorio
+        const pumlUrl = 'https://raw.githubusercontent.com/lunalunaluna707/diagrama-c4/main/c4.puml';
+
+        // Función para cargar el archivo .puml
+        async function loadPumlFile() {
             try {
-                const response = await fetch(url);
-                if (!response.ok) throw new Error('Error al cargar el archivo .puml');
+                const response = await fetch(pumlUrl);
+                if (!response.ok) throw new Error('No se pudo cargar el archivo .puml');
                 const pumlCode = await response.text();
-                updateDiagram(pumlCode);
+                renderDiagram(pumlCode);
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Error al cargar el archivo .puml:', error);
             }
         }
 
-        // Función para comprimir y codificar el contenido PlantUML
-        function encodePlantUML(plantumlCode) {
-            const utf8Array = new TextEncoder().encode(plantumlCode); // Convertir a UTF-8
-            const compressed = pako.deflate(utf8Array, { level: 9 }); // Comprimir usando deflate
+        // Renderizar el diagrama usando PlantUML
+        function renderDiagram(pumlCode) {
+            const encoded = encodeURIComponent(pumlCode);
+            const imageUrl = `https://www.plantuml.com/plantuml/svg/~h${encoded}`;
 
-            // Convertir los bytes comprimidos a una cadena en base64 URL-safe
-            let base64 = btoa(String.fromCharCode.apply(null, compressed));
-            base64 = base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-            return base64;
+            const imgElement = document.getElementById('diagram');
+            imgElement.src = imageUrl;
         }
 
-        // Actualizar el diagrama con el código codificado
-        function updateDiagram(pumlCode) {
-            const encoded = encodePlantUML(pumlCode);
-            const imageUrl = `https://www.plantuml.com/plantuml/png/${encoded}`;
-            document.getElementById('diagram').src = imageUrl;
-        }
-
-        // Llamar a la función al cargar la página
-        window.onload = fetchPumlFile;
+        // Cargar el diagrama cuando la página esté lista
+        window.onload = loadPumlFile;
     </script>
 </head>
 <body>
-    <h1>Diagramaaaaaa C4 UML</h1>
+    <h1>Diagrama C4 UML</h1>
     <img id="diagram" alt="Cargando diagrama..." />
-    <p>Modifica el archivo <code>c4.puml</code> en tu repositorio para actualizar automáticamente el diagrama.</p>
+    <p>Modifica el archivo <code>c4.puml</code> en tu repositorio para que se actualice automáticamente aquí.</p>
 </body>
 </html>
+
