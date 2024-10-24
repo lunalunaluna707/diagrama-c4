@@ -5,34 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diagrama C4 UML</title>
     <script>
-        async function fetchPUMLContent() {
+        // Función para cargar el archivo .puml desde el repositorio
+        async function fetchPumlFile() {
+            const url = 'https://raw.githubusercontent.com/lunalunaluna707/diagrama-c4/main/c4.puml';
             try {
-                // Ruta del archivo c4.puml en el repositorio (asegúrate que sea pública)
-                const url = 'https://raw.githubusercontent.com/lunalunaluna707/diagrama-c4/main/c4.puml';
                 const response = await fetch(url);
-                const plantumlCode = await response.text();
-                updateDiagram(plantumlCode);
+                if (!response.ok) throw new Error('No se pudo cargar el archivo .puml');
+                const pumlCode = await response.text();
+                updateDiagram(pumlCode);
             } catch (error) {
-                console.error('Error al cargar el archivo PUML:', error);
+                console.error('Error:', error);
             }
         }
 
+        // Función para codificar el contenido PlantUML en una URL
         function encodePlantUML(plantumlCode) {
-            const encoded = encodeURIComponent(plantumlCode);
-            return `https://www.plantuml.com/plantuml/png/${btoa(unescape(encoded))}`;
+            const deflated = new TextEncoder().encode(plantumlCode);
+            const compressed = pako.deflate(deflated, { level: 9 });
+            return btoa(String.fromCharCode(...compressed))
+                .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
         }
 
-        function updateDiagram(plantumlCode) {
-            const imageUrl = encodePlantUML(plantumlCode);
+        // Actualiza el diagrama con el contenido del archivo .puml
+        function updateDiagram(pumlCode) {
+            const encoded = encodePlantUML(pumlCode);
+            const imageUrl = `https://www.plantuml.com/plantuml/png/${encoded}`;
             document.getElementById('diagram').src = imageUrl;
         }
 
-        window.onload = fetchPUMLContent;
+        // Llama a la función para cargar el archivo .puml al cargar la página
+        window.onload = fetchPumlFile;
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.4/pako.min.js"></script>
 </head>
 <body>
     <h1>Diagrama C4 UML</h1>
     <img id="diagram" alt="Diagrama C4" />
-    <p>El diagrama se actualizará automáticamente cada vez que cambies el archivo <code>c4.puml</code>.</p>
+    <p>Modifica el archivo <code>c4.puml</code> para actualizar automáticamente el diagrama.</p>
 </body>
 </html>
+
