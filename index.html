@@ -6,7 +6,7 @@
     <title>Diagrama C4 UML</title>
     <script>
         async function loadPuml() {
-            const url = 'https://raw.githubusercontent.com/lunalunaluna707/diagrama-c4/main/c4.puml'; // URL del archivo c4.puml en tu repositorio.
+            const url = 'https://raw.githubusercontent.com/lunalunaluna707/diagrama-c4/main/c4.puml'; // Asegúrate de que esta URL sea correcta
             try {
                 const response = await fetch(url);
                 if (!response.ok) throw new Error('No se pudo cargar el archivo c4.puml');
@@ -21,7 +21,7 @@
 
         function encodePlantUML(plantumlCode) {
             const encoded = encodeURIComponent(plantumlCode)
-                .replace(/%0A/g, '/'); // Reemplazar saltos de línea
+                .replace(/%0A/g, '/'); // Reemplaza los saltos de línea
             return `https://www.plantuml.com/plantuml/png/${btoa(unescape(encoded))}`;
         }
 
@@ -29,7 +29,7 @@
     </script>
 </head>
 <body>
-    <h1>Diagramaaaaaaaa C4 UML</h1>
+    <h1>Diagrama C4 UML</h1>
     <img id="diagram" alt="Cargando diagrama..." />
     <p>Modifica el archivo <code>c4.puml</code> en tu repositorio para actualizar este diagrama.</p>
 </body>
