@@ -23,7 +23,7 @@ Person(administrador, "Administrador", "Gestiona libremente las funcionalidades 
 'System(app,"Aplicación móvil", "", $sprite="mobile")#midnightblue
 
 
-System_Boundary(app,"Aplicación web"){
+System_Boundary(app,"Aplicaciónnnnn web"){
 Component(modulo_iniciosesion, "Modulo de inicio de sesion", "Maneja la autenticidad del usuario")#ffe557
 Component(modulo_citas, "Modulo de Citas", "Gestiona las citas de las maquinas") #ffe557
 Component(modulo_empleados, "Modulo de empleados", "Gestiona la informacion del empleado") #ffe557
