@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diagrama C4 UML</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.4/pako.min.js"></script>
     <script>
-        // Función para cargar el archivo .puml desde el repositorio
+        // Cargar el archivo c4.puml desde el repositorio
         async function fetchPumlFile() {
             const url = 'https://raw.githubusercontent.com/lunalunaluna707/diagrama-c4/main/c4.puml';
             try {
                 const response = await fetch(url);
-                if (!response.ok) throw new Error('No se pudo cargar el archivo .puml');
+                if (!response.ok) throw new Error('Error al cargar el archivo .puml');
                 const pumlCode = await response.text();
                 updateDiagram(pumlCode);
             } catch (error) {
@@ -18,30 +19,31 @@
             }
         }
 
-        // Función para codificar el contenido PlantUML en una URL
+        // Función para comprimir y codificar el contenido PlantUML
         function encodePlantUML(plantumlCode) {
-            const deflated = new TextEncoder().encode(plantumlCode);
-            const compressed = pako.deflate(deflated, { level: 9 });
-            return btoa(String.fromCharCode(...compressed))
-                .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+            const utf8Array = new TextEncoder().encode(plantumlCode); // Convertir a UTF-8
+            const compressed = pako.deflate(utf8Array, { level: 9 }); // Comprimir usando deflate
+
+            // Convertir los bytes comprimidos a una cadena en base64 URL-safe
+            let base64 = btoa(String.fromCharCode.apply(null, compressed));
+            base64 = base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+            return base64;
         }
 
-        // Actualiza el diagrama con el contenido del archivo .puml
+        // Actualizar el diagrama con el código codificado
         function updateDiagram(pumlCode) {
             const encoded = encodePlantUML(pumlCode);
             const imageUrl = `https://www.plantuml.com/plantuml/png/${encoded}`;
             document.getElementById('diagram').src = imageUrl;
         }
 
-        // Llama a la función para cargar el archivo .puml al cargar la página
+        // Llamar a la función al cargar la página
         window.onload = fetchPumlFile;
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.4/pako.min.js"></script>
 </head>
 <body>
-    <h1>Diagrama C4 UML</h1>
-    <img id="diagram" alt="Diagrama C4" />
-    <p>Modifica el archivo <code>c4.puml</code> para actualizar automáticamente el diagrama.</p>
+    <h1>Diagramaaaaaa C4 UML</h1>
+    <img id="diagram" alt="Cargando diagrama..." />
+    <p>Modifica el archivo <code>c4.puml</code> en tu repositorio para actualizar automáticamente el diagrama.</p>
 </body>
 </html>
-
