@@ -6,7 +6,7 @@
     <title>Diagrama C4 UML</title>
     <script>
         async function loadPuml() {
-            const url = 'https://raw.githubusercontent.com/lunalunaluna707/diagrama-c4/main/c4.puml'; // Cambia esta URL si es necesario.
+            const url = 'https://raw.githubusercontent.com/lunalunaluna707/diagrama-c4/main/c4.puml'; // URL del archivo c4.puml en tu repositorio.
             try {
                 const response = await fetch(url);
                 if (!response.ok) throw new Error('No se pudo cargar el archivo c4.puml');
@@ -20,7 +20,8 @@
         }
 
         function encodePlantUML(plantumlCode) {
-            const encoded = encodeURIComponent(plantumlCode);
+            const encoded = encodeURIComponent(plantumlCode)
+                .replace(/%0A/g, '/'); // Reemplazar saltos de línea
             return `https://www.plantuml.com/plantuml/png/${btoa(unescape(encoded))}`;
         }
 
