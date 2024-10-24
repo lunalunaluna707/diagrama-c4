@@ -4,11 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diagrama C4 UML</title>
-    <script src="https://www.plantuml.com/plantuml/uml/"></script>
+    <script>
+        async function fetchPUMLContent() {
+            try {
+                // Ruta del archivo c4.puml en el repositorio (asegúrate que sea pública)
+                const url = 'https://raw.githubusercontent.com/lunalunaluna707/diagrama-c4/main/c4.puml';
+                const response = await fetch(url);
+                const plantumlCode = await response.text();
+                updateDiagram(plantumlCode);
+            } catch (error) {
+                console.error('Error al cargar el archivo PUML:', error);
+            }
+        }
+
+        function encodePlantUML(plantumlCode) {
+            const encoded = encodeURIComponent(plantumlCode);
+            return `https://www.plantuml.com/plantuml/png/${btoa(unescape(encoded))}`;
+        }
+
+        function updateDiagram(plantumlCode) {
+            const imageUrl = encodePlantUML(plantumlCode);
+            document.getElementById('diagram').src = imageUrl;
+        }
+
+        window.onload = fetchPUMLContent;
+    </script>
 </head>
 <body>
     <h1>Diagrama C4 UML</h1>
-    <img src="https://www.plantuml.com/plantuml/png/jLNDRYD54BxFKpG34ewqyOJrRfP5YhI9RI3IEebm0iUePhhiDEgVeNySHOY7uSXv7o4lHjVyn6vZA-4G7ontrLVrVLLTNVxaF5WVbCo-4hgIWIExyxvsFnI5XVlXKlYxK0Q7jZBQe_R3ogYYbg0fvj1vBaLPZDyTNf7fPlQvKE0yscYw7SS841hji7wb_AesccBQ_1mNaOtzU7bnVVhRT7uvcnw_WCk76hWThJb5z1uk8kBGrLPuTCLgD3mQ7XNaS4NZWNjqHk7XyIxMLoPzefnCVpqVNrxCNu6FuwhvyH-kjwz8zZRhPoIzn888N3f4AQ2I9l3zW4APKaXi0TafvrE9AggzXkKWNtqtFChVi6z8tzX8Oq_ohqSVHiUZTsGjZULeU_jYWU_VVyWFiknRDcaRSqFQigluPVGWk01Mc3Silsb_iS5KrHA1cuCyMa-h2Zco6YmmgZX83vPnyCQn1wOC5mjHHOkBVCm5npYMQD6HahPr9parep5uMBgJLlu1Yz8uZevx8S2LqC9v6vaj4M-UISbFwBmm6fWKfMsQWKo2OukWAx9BmO6ZOvpC36ePTLNYyOj-kPHrZ_mTijEwoK6axCm4pS4-PFC7vr7TzkS1r3M9NREnUonZoZyp5ZzFxtqGEnMakOqbHR4ENKmQusQFNyXCcbiF_I8loIO_QFmTcde23QkegCW8agoxk4ZLtV5kmafuS2dJc4nfHy6n1aXkEgZ7l_y8GeDxBZrsix95qO_GDasiSc6iwZf5PVG9dYDIGAzLA15j9YMRRReImfW_YVlVvIbeSLk4VNXFrbMpLTr-hhys9csETeMMWURiwT_7PHOh3tefaUK44FG6MCpckaC_Ntt4eDrc65t9dIGNGGhAuu_V7ntj3-xdXORafK59c_foNnoxVR6RvpH9qhS9U2Z18Rim75t6-sD-HjySsntLDAtaNRjqX6vA96UlFLvE_7o43U2wUGJisxeBcOecT5BMZeYslwn_U3qYAV4NbCtsSNUYTbayhRTrktREzTAY0mRKfv-lhw_c-G7XqcNwF9hS_MH5tnnPPLJGecfs_ZPyZImvJKhth-0OiBD9Xobvad62gu1orMncYwuEw3mqVqhhDyVEjKSBLLCn9TcnO_PC-MS9ggjhzlYFDz5A4_04wKIbAt5xwFVd8NUQOsFYTp-3FPdMoo3Dbhw1_QzZNzu45dD_Gis3aly2" alt="Diagrama C4" />
-    <p>Actualiza el archivo .puml para ver los cambios.</p>
+    <img id="diagram" alt="Diagrama C4" />
+    <p>El diagrama se actualizará automáticamente cada vez que cambies el archivo <code>c4.puml</code>.</p>
 </body>
 </html>
