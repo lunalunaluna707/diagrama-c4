@@ -5,38 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diagrama C4 UML</title>
     <script>
-        // URL del archivo .puml en tu repositorio
-        const pumlUrl = 'https://raw.githubusercontent.com/lunalunaluna707/diagrama-c4/main/c4.puml';
-
-        // Función para cargar el archivo .puml
-        async function loadPumlFile() {
+        async function loadPuml() {
+            const url = 'https://raw.githubusercontent.com/lunalunaluna707/diagrama-c4/main/c4.puml'; // Cambia esta URL si es necesario.
             try {
-                const response = await fetch(pumlUrl);
-                if (!response.ok) throw new Error('No se pudo cargar el archivo .puml');
-                const pumlCode = await response.text();
-                renderDiagram(pumlCode);
+                const response = await fetch(url);
+                if (!response.ok) throw new Error('No se pudo cargar el archivo c4.puml');
+                const plantumlCode = await response.text();
+                const encodedUrl = encodePlantUML(plantumlCode);
+                document.getElementById('diagram').src = encodedUrl;
             } catch (error) {
-                console.error('Error al cargar el archivo .puml:', error);
+                console.error('Error al cargar el archivo PlantUML:', error);
+                document.getElementById('diagram').alt = 'Error al cargar el diagrama.';
             }
         }
 
-        // Renderizar el diagrama usando PlantUML
-        function renderDiagram(pumlCode) {
-            const encoded = encodeURIComponent(pumlCode);
-            const imageUrl = `https://www.plantuml.com/plantuml/svg/~h${encoded}`;
-
-            const imgElement = document.getElementById('diagram');
-            imgElement.src = imageUrl;
+        function encodePlantUML(plantumlCode) {
+            const encoded = encodeURIComponent(plantumlCode);
+            return `https://www.plantuml.com/plantuml/png/${btoa(unescape(encoded))}`;
         }
 
-        // Cargar el diagrama cuando la página esté lista
-        window.onload = loadPumlFile;
+        window.onload = loadPuml;
     </script>
 </head>
 <body>
     <h1>Diagrama C4 UML</h1>
     <img id="diagram" alt="Cargando diagrama..." />
-    <p>Modifica el archivo <code>c4.puml</code> en tu repositorio para que se actualice automáticamente aquí.</p>
+    <p>Modifica el archivo <code>c4.puml</code> en tu repositorio para actualizar este diagrama.</p>
 </body>
 </html>
-
